@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculadora</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            width: 350px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #2a5298;
+        }
+
+        input {
+            width: 100%;
+            height: 45px;
+            padding: 10px;
+            margin-bottom: 12px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 15px;
+            box-sizing: border-box;
+        }
+
+        .botoes {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        button {
+            height: 45px;
+            border-radius: 8px;
+            border: none;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            background: #2a5298;
+            color: white;
+        }
+
+        button:hover {
+            background: #1e3c72;
+        }
+
+        .resultado {
+            margin-top: 10px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .erro {
+            color: red;
+        }
+
+        .sucesso {
+            color: green;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Calculadora</h2>
+
+    <input type="text" id="n1" placeholder="Primeiro número">
+    <input type="text" id="n2" placeholder="Segundo número">
+
+    <div class="botoes">
+        <button onclick="calcular('somar')">Somar</button>
+        <button onclick="calcular('subtrair')">Subtrair</button>
+        <button onclick="calcular('multiplicar')">Multiplicar</button>
+        <button onclick="calcular('dividir')">Dividir</button>
+    </div>
+
+    <div id="mensagem" class="resultado"></div>
+</div>
+
+<script>
+    async function calcular(operacao) {
+
+        const numero1 = document.getElementById("n1").value;
+        const numero2 = document.getElementById("n2").value;
+        const mensagem = document.getElementById("mensagem");
+
+        mensagem.innerText = "";
+        mensagem.className = "resultado";
+
+        try {
+
+            const response = await fetch(
+                `http://localhost:8080/api/calculadora/${operacao}`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    numero1: numero1,
+                    numero2: numero2
+                })
+            });
+
+            if (!response.ok) {
+                const erro = await response.text();
+                throw new Error(erro);
+            }
+
+            const data = await response.json();
+
+            mensagem.innerText = "Resultado: " + data.resultado;
+            mensagem.classList.add("sucesso");
+
+        } catch (error) {
+            mensagem.innerText = "Erro: " + error.message;
+            mensagem.classList.add("erro");
+        }
+    }
+</script>
+
+</body>
+</html>

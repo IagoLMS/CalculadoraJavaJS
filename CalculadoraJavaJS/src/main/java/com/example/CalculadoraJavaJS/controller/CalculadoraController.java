@@ -1,4 +1,4 @@
-package com.example.CalculadoraJavaJS.controller.;
+package com.example.CalculadoraJavaJS.controller;
 
 import com.example.CalculadoraJavaJS.dto.*;
 import com.example.CalculadoraJavaJS.service.CalculadoraService;
@@ -16,28 +16,28 @@ public class CalculadoraController {
     }
 
     @PostMapping("/somar")
-    public OperacaoResponse somar(@RequestBody com.seuprojeto.calculadora.dto.OperacaoRequest request) {
+    public OperacaoResponse somar(@RequestBody OperacaoRequest request ) {
         return new OperacaoResponse(
                 service.somar(request.getNumero1(), request.getNumero2())
         );
     }
 
     @PostMapping("/subtrair")
-    public OperacaoResponse subtrair(@RequestBody com.seuprojeto.calculadora.dto.OperacaoRequest request) {
+    public OperacaoResponse subtrair(@RequestBody OperacaoRequest request) {
         return new OperacaoResponse(
                 service.subtrair(request.getNumero1(), request.getNumero2())
         );
     }
 
     @PostMapping("/multiplicar")
-    public OperacaoResponse multiplicar(@RequestBody com.seuprojeto.calculadora.dto.OperacaoRequest request) {
+    public OperacaoResponse multiplicar(@RequestBody OperacaoRequest request) {
         return new OperacaoResponse(
                 service.multiplicar(request.getNumero1(), request.getNumero2())
         );
     }
 
     @PostMapping("/dividir")
-    public OperacaoResponse dividir(@RequestBody com.seuprojeto.calculadora.dto.OperacaoRequest request) {
+    public OperacaoResponse dividir(@RequestBody OperacaoRequest request) {
         return new OperacaoResponse(
                 service.dividir(request.getNumero1(), request.getNumero2())
         );
